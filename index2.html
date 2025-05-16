@@ -366,6 +366,22 @@
         </div>
     </div>
 
+       <!-- 音乐播放器 -->
+       <!-- <div class="music-player">
+        <button id="playButton">▶</button>
+        <div class="music-info">
+            <div class="music-title">这就是爱</div>
+            <div class="music-artist">张杰</div>
+        </div>
+    </div> -->
+
+    <audio id="backgroundMusic" loop>
+        <source src="ccc.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
+
+    <!-- <audio src="ccc.mp3" autoplay loop></audio> -->
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         function showMessage() {
@@ -540,6 +556,57 @@
             });
         }
 
+         // 检查浏览器是否支持自动播放
+         document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('backgroundMusic');
+            
+            // 尝试自动播放
+            audio.play().catch(error => {
+                console.log('自动播放被阻止:', error);
+                // 如果自动播放被阻止，可以提示用户点击播放
+                const playButton = document.createElement('button');
+                playButton.textContent = '点击播放背景音乐';
+                playButton.onclick = function() {
+                    audio.play();
+                    playButton.style.display = 'none';
+                };
+                document.body.appendChild(playButton);
+            });
+
+            audio.addEventListener('ended', () => {
+                audio.currentTime = 0;
+                audio.play();
+            });
+
+        });
+
+        // 初始化音乐播放器
+        function initMusicPlayer() {
+            const audio = document.getElementById('backgroundMusic');
+            const playButton = document.getElementById('playButton');
+            let isPlaying = true;
+
+            audio.play();
+
+            // playButton.addEventListener('click', () => {
+            //     if (isPlaying) {
+            //         audio.pause();
+            //         playButton.textContent = '▶';
+            //     } else {
+            //         audio.play();
+            //         playButton.textContent = '⏸';
+            //     }
+            //     isPlaying = !isPlaying;
+            // });
+
+            // 播放结束时重新播放
+            audio.addEventListener('ended', () => {
+                audio.currentTime = 0;
+                audio.play();
+            });
+        }
+
+
         // 页面加载时启动特效
         window.onload = function() {
             createFloatingElements();
@@ -547,6 +614,7 @@
             setInterval(createHeartRain, 8000);
             createFloatingHearts();
             initParticles();
+            // initMusicPlayer();
         }
     </script>
 </body>
